@@ -7,33 +7,52 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const supabase = createClient();
   const router = useRouter();
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName },
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+
     setLoading(false);
     if (error) {
       setError(error.message);
     } else {
-      router.push("/");
-      router.refresh();
+      setSuccess(true);
     }
   }
 
-  async function handleGoogle() {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${location.origin}/auth/callback` },
-    });
+  if (success) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-4 text-center">
+        <div>
+          <h1 className="text-xl font-semibold">Cek Email Anda</h1>
+          <p className="mt-2 text-sm text-[var(--muted)]">
+            Kami telah mengirim tautan verifikasi ke <strong>{email}</strong>.
+          </p>
+          <Link href="/login" className="mt-4 inline-block text-sm text-brand-purple">
+            Kembali ke Login
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -41,14 +60,17 @@ export default function LoginPage() {
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
           <h1 className="text-2xl font-bold">
-            Masuk ke ZYXELL<span className="text-brand-purple">.</span>
+            Daftar ZYXELL<span className="text-brand-purple">.</span>
           </h1>
-          <p className="mt-1 text-sm text-[var(--muted)]">
-            Selamat datang kembali.
-          </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleRegister} className="space-y-4">
+          <Input
+            placeholder="Nama Lengkap"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
           <Input
             type="email"
             placeholder="Email"
@@ -58,31 +80,22 @@ export default function LoginPage() {
           />
           <Input
             type="password"
-            placeholder="Password"
+            placeholder="Password (min. 6 karakter)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            minLength={6}
             required
           />
           {error && <p className="text-xs text-red-500">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Masuk..." : "Masuk"}
+            {loading ? "Mendaftar..." : "Daftar"}
           </Button>
         </form>
 
-        <div className="relative text-center">
-          <span className="bg-[var(--background)] px-2 text-xs text-[var(--muted)]">
-            atau
-          </span>
-        </div>
-
-        <Button variant="outline" className="w-full" onClick={handleGoogle}>
-          Masuk dengan Google
-        </Button>
-
         <p className="text-center text-xs text-[var(--muted)]">
-          Belum punya akun?{" "}
-          <Link href="/register" className="font-medium text-brand-purple">
-            Daftar
+          Sudah punya akun?{" "}
+          <Link href="/login" className="font-medium text-brand-purple">
+            Masuk
           </Link>
         </p>
       </div>
