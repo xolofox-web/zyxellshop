@@ -1,0 +1,4 @@
+CASHI_BASE_URL=https://api.cashi.id
+CASHI_API_KEY=your_cashi_api_key
+CASHI_WEBHOOK_SECRET=your_webhook_secret
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
