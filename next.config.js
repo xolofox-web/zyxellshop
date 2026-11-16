@@ -21,4 +21,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig; // <-- UBAH DARI module.exports MENJADI export default
