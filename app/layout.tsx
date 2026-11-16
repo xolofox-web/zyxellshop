@@ -1,14 +1,6 @@
-import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
-import { ThemeProvider } from "@/components/layout/theme-provider";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-plus-jakarta",
-});
-
-export const metadata: Metadata = {
+export const metadata = {
   title: "ZYXELL",
   description: "Platform katalog modern",
 };
@@ -19,10 +11,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" suppressHydrationWarning>
-      <body className={`${plusJakarta.variable} font-sans antialiased`}>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+    <html lang="id">
+      <body>{children}</body>
     </html>
   );
 }
