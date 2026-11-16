@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ["@supabase/ssr"], // <-- Tambahan untuk memperbaiki error middleware di Vercel
   images: {
     remotePatterns: [
       {
