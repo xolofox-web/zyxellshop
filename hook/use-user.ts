@@ -6,7 +6,7 @@ import type { UserProfile } from "@/lib/types";
 
 export function useUser() {
   const supabase = createClient();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
