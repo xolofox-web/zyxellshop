@@ -12,17 +12,11 @@ export function useUser() {
 
   useEffect(() => {
     async function load() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
 
       if (user) {
-        const { data } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", user.id)
-          .single();
+        const { data } = await supabase.from("users").select("*").eq("id", user.id).single();
         setProfile(data);
       }
       setLoading(false);
