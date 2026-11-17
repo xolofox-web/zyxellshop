@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 export async function middleware() {
-  // Biarkan semua halaman lewat tanpa dicek login
   return NextResponse.next();
 }
 
