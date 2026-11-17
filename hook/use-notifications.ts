@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Notification } from "@/lib/types";
@@ -11,22 +10,13 @@ export function useNotifications() {
 
   async function fetchNotifications() {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-    const { data } = await supabase
-      .from("notifications")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
+    if (!user) { setLoading(false); return; }
+    const { data } = await supabase.from("notifications").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
     setNotifications(data ?? []);
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
+  useEffect(() => { fetchNotifications(); }, []);
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
